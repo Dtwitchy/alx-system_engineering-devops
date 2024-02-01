@@ -7,4 +7,4 @@
 # OR
 # netstat -lp
 # OR
-sudo netstat -lp
+netstat -ltup
