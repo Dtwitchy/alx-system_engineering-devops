@@ -1,20 +1,31 @@
 #!/usr/bin/env bash
-# Install and configure HAproxy on your load balancer server
+# Script to install and configure HAProxy on lb-01 server
+# Configures HAProxy to distribute traffic to web-01 and web-02 servers using roundrobin algorithm
+# Ensures HAProxy can be managed via an init script
 
-ufw allow 1344
-apt-get -y update
-apt-get install -y haproxy
+# Update package list
+sudo apt-get -y update
 
-printf %s "
-backend web-backend
-balance roundrobin
-option forwardfor
-server 9318-web-01 3.236.115.124:80 check
-server 9318-web-02 3.227.233.5:80 check
-frontend proxynode
+# Install HAProxy
+sudo apt-get -y install haproxy
+
+# Configure HAProxy
+server_config="
+frontend dtwitch.tech-frontend
 bind *:80
 mode http
-default_backend web-backend
-" >> /etc/haproxy/haproxy.cfg
+default_backend dtwitch.tech-backend
 
+backend dtwitch.tech-backend
+balance roundrobin
+server 519592-web-01 54.175.150.47:80 check
+server 519592-web-02 54.85.132.208:80 check
+"
+
+echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+
+# Enable HAProxy to start with system boot
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+
+# Restart HAProxy service
 sudo service haproxy restart
