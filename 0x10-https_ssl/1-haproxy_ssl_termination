@@ -1,4 +1,5 @@
 global
+i
         log /dev/log    local0
         log /dev/log    local1 notice
         chroot /var/lib/haproxy
@@ -33,19 +34,19 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-frontend dtwitch.tech-frontend
+frontend dtwitchy.tech-frontend
         bind *:80
         mode http
         http-request redirect scheme https code 301 unless { ssl_fc }
         http-request set-header X_Forwarded-Proto http
-        default_backend dtwitch.tech-backend
+        default_backend dtwitchy.tech-backend
 
-frontend dtwitch.tech-frontend-https
-        bind *:443 ssl crt /etc/haproxy/certs/clickviral.tech.pem
+frontend dtwitchy.tech-frontend-https
+        bind *:443 ssl crt /etc/haproxy/certs/dtwitchy.tech.pem
         http-request set-header X-Forwarded-Proto https
-        default_backend dtwitch.tech-backend
+        default_backend dtwitchy.tech-backend
 
-backend dtwitch.tech-backend
+backend dtwitchy.tech-backend
         balance roundrobin
         server 519592-web-01 54.175.150.47:80 check
         server 519592-web-02 54.85.132.208:80 check
