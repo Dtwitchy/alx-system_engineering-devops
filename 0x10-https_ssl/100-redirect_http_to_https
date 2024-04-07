@@ -47,5 +47,5 @@ frontend dtwitchy.tech-frontend-https
 
 backend dtwitchy.tech-backend
         balance roundrobin
-        server 519592-web-01 54.175.150.47:80 check
+        server 519592-web-01 34.224.63.71:80 check
         server 519592-web-02 54.85.132.208:80 check
